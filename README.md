@@ -1,4 +1,4 @@
-# azure-ad-authc
+# Azure AD Authentication Service
 
 ## Scope
 

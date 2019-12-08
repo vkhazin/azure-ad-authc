@@ -60,7 +60,7 @@ Function requires authentication, not anonymous!
 * Body:
 ```
 {
-   "message": "Hello username retrived from the authentication token"
+   "message": "Hello @username retrived from the authentication token"
 }
 ```
 

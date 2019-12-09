@@ -3,7 +3,7 @@
 ## Scope
 
 * Build two Azure functions with Http triggers: `authenticate` and `helloWorld` in the same repo in ***different folders***
-* Programming language: dotnet core 2.2 c#
+* Programming language: dotnet core 2.2 C# on Linux
 * `az cli` one script per function to deploy as a new deployment or as an update to an existing deployment 
 * Any settings/configuration required on Azure AD
 * Unit tests

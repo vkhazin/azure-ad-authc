@@ -12,58 +12,37 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Client;
 using Newtonsoft.Json;
 
-namespace Authenticate
+namespace authenticate
 {
-    public static class Authenticate
+    public static class AuthenticateFunc
     {
         [FunctionName("authenticate")]
         public static async Task<HttpResponseMessage> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
             ILogger log)
         {
-            var cliendId = Environment.GetEnvironmentVariable("ClientId");
-            var directoryName = Environment.GetEnvironmentVariable("DirectoryName");
+            var appSettings = new AppSettings(
+                Environment.GetEnvironmentVariable("ClientId"),
+                Environment.GetEnvironmentVariable("DirectoryName"));
 
-            if (string.IsNullOrEmpty(cliendId))
+            if (string.IsNullOrEmpty(appSettings.ClientId))
                 return GetBadRequestMessage("Configuration missing ClientId parameter");
-            if (string.IsNullOrEmpty(directoryName))
+            if (string.IsNullOrEmpty(appSettings.DirectoryName))
                 return GetBadRequestMessage("Configuration missing DirectoryName parameter");
 
             var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            var credentials = JsonConvert.DeserializeObject<Credentials>(requestBody);
-            var message = "Invalid username and/or password";
+            var credentials = JsonConvert.DeserializeObject<UserCredentials>(requestBody);
 
-            if (credentials != null)
+            var result = await AuthService.AcquireToken(appSettings, credentials);
+            switch (result.Status)
             {
-                var scopes = new string[] { "user.read" };
-                var app = PublicClientApplicationBuilder.Create(cliendId)
-                    .WithAuthority($"https://login.microsoftonline.com/{directoryName}").Build();
-
-                try
-                {
-                    var result = app.AcquireTokenByUsernamePassword(
-                        scopes,
-                        credentials.Username,
-                        new NetworkCredential("", credentials.Password).SecurePassword
-                        ).ExecuteAsync().Result;
-
-                    return GetResponseMessage(HttpStatusCode.OK, new { token = result.AccessToken });
-                }
-                catch (Exception exception)
-                {
-                    exception = exception is MsalException || exception.InnerException == null || !(exception.InnerException is MsalException)
-                        ? exception
-                        : exception.InnerException;
-
-                    if (exception is MsalException)
-                    {
-
-                    }
-                    message = exception.Message;
-                }
+                case AuthServiceStatus.OK:
+                    return GetResponseMessage(HttpStatusCode.OK, new { token = result.Token });
+                case AuthServiceStatus.InvalidCredentials:
+                    return GetResponseMessage(HttpStatusCode.Unauthorized, new { message = "Invalid username and/or password" });
+                default:
+                    return GetResponseMessage(HttpStatusCode.Unauthorized, new { message = result.ErrorMessage });
             }
-
-            return GetResponseMessage(HttpStatusCode.Unauthorized, new { message });
         }
 
         private static HttpResponseMessage GetBadRequestMessage(string message)
@@ -75,12 +54,6 @@ namespace Authenticate
             {
                 Content = new StringContent(JsonConvert.SerializeObject(response))
             };
-        }
-
-        private class Credentials
-        {
-            public string Username { get; set; }
-            public string Password { get; set; }
         }
     }
 }

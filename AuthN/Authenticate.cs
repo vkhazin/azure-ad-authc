@@ -60,12 +60,24 @@ namespace AzureADAuthenticationService
         try
         {
           var token = await GenerateToken(username, password);
-          log.LogInformation(token.ToString());
-          return new JsonResult(token);
+          
+          //Empty token means authentication has failed, weird but that's how it is
+          if (string.IsNullOrEmpty(token.access_token)) {
+            var result = new ObjectResult(new {
+              message = "Invalid username and/or password"
+            });
+            result.StatusCode = StatusCodes.Status401Unauthorized;
+            return result;
+          
+          } else {
+            return new OkObjectResult(token);
+          }
         }
         catch (MsalException)
         {
-          return new UnauthorizedResult(); //(new { Message = "Invalid username and/or password" });
+          var result = new ObjectResult("Error occurred retrieving token");
+          result.StatusCode = StatusCodes.Status429TooManyRequests;
+          return result;
         }
       }
       catch (Exception exception)

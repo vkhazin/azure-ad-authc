@@ -18,8 +18,8 @@ Reference: https://docs.microsoft.com/en-us/graph/auth-v2-user
 * Body:
 ```
 {
-   "username": "azure-ad email address",
-   "password": "azure-ad password"
+  "username": "azure-ad email address",
+  "password": "azure-ad password"
 }
 ```
 
@@ -29,13 +29,23 @@ Reference: https://docs.microsoft.com/en-us/graph/auth-v2-user
 * Body:
 ```
 {
-   "token": "token representing username/password identity"
+  "token_type": "Bearer",
+  "access_token": "long-string,
+  "scope": "User.Read profile openid email",
+  "ext_expires_in": "3599",
+  "refresh_token": "long -string",
+  "id_token": "long-string"
 }
 ```
 
 ### Response Invalid Username/Password
 
 * Status Code: 401
+* Body:
+```
+{
+   "message": "Invalid username and/or password"
+}
 
 ### Response Bad Request
 
@@ -46,6 +56,15 @@ Reference: https://docs.microsoft.com/en-us/graph/auth-v2-user
    "message": "Missing username and/or password"
 }
 ```
+
+### Response Intermittent Error
+
+* Status Code: 429
+* Body:
+```
+{
+   "message": "Error occurred retrieving token"
+}
 
 ## Setup on [Visual Studio Online](https://online.visualstudio.com/)
 
@@ -127,3 +146,22 @@ curl -XPOST -H "content-type:application/json" https://trgos-authentication.azur
 }'
 ```
 * Post a request using https://restninja.io/ (or alike) to simulate a browser request
+* To verify the access token run:
+`curl -XGET -H "Authorization:Bearer {access_token}" https://graph.microsoft.com/v1.0/me`
+* Expected response:
+```
+{
+  "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#users/$entity",
+  "businessPhones": [],
+  "displayName": "Call Taker 1",
+  "givenName": null,
+  "jobTitle": null,
+  "mail": null,
+  "mobilePhone": null,
+  "officeLocation": null,
+  "preferredLanguage": null,
+  "surname": null,
+  "userPrincipalName": "call.taker.1@trgos.onmicrosoft.com",
+  "id": "2e2ad39d-a79d-4479-813e-348a9460bbc7"
+}
+```

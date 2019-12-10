@@ -98,6 +98,12 @@ az functionapp config appsettings set --name trgos-authentication --resource-gro
    --settings "AppClientID=--app client id--" \
    --settings "ClientSecret=--client-secret--"
 ```
+* To configure [CORS](https://docs.microsoft.com/en-us/azure/azure-functions/functions-how-to-use-azure-function-app-settings#cors):
+```
+az functionapp cors add --name trgos-authentication \
+--resource-group authpoc-resource-group \
+--allowed-origins "*"
+```
 
 ## To test the deployment
 

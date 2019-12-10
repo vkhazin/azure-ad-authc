@@ -100,6 +100,8 @@ az functionapp config appsettings set --name trgos-authentication --resource-gro
 ```
 * To configure [CORS](https://docs.microsoft.com/en-us/azure/azure-functions/functions-how-to-use-azure-function-app-settings#cors):
 ```
+az functionapp cors remove -g authpoc-resource-group -n trgos-authentication --allowed-origins
+
 az functionapp cors add --name trgos-authentication \
 --resource-group authpoc-resource-group \
 --allowed-origins "*"
@@ -108,5 +110,12 @@ az functionapp cors add --name trgos-authentication \
 ## To test the deployment
 
 * Create a user or two using Azure AD Portal
-* 
+* Post a request as if from a server-side:
+```
+curl -XPOST -H "content-type:application/json" https://trgos-authentication.azurewebsites.net/api/authenticate -d '{
+   "username": "email address",
+   "password": "password"
+}'
+```
+* Post a request using https://restninja.io/ (or alike) to simulate a browser request
 

@@ -1,10 +1,13 @@
 ## Azure Setup
 
-### Obtain ClientId
+### Configure appication
 
-* Proceed to Azure AD from Azure Portal
-* Register a new application
-* Get client id:
+* Proceed to Azure AD from Azure Portal.
+* Register a new application.
+* Go to Authentication page and switch **Treat application as a public client** to **Yes** under Advanced settings.
+* Go to API permissions and click **Grant admin consent** button.
+
+#### Obtain ClientId
 
 ![ClientId](readme-img/clientid.png)
 

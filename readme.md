@@ -111,8 +111,6 @@ az functionapp create --resource-group $nameResourceGroup --consumption-plan-loc
 * Select `Grant Admin Consent`
 * There is a delay until consent is granting, wait for the green icon before proceeding
 * Select `Authentication` on the left hand menu
-<!-- * Scroll down to `Default client type`
-* Select `yes` for: `Treat application as a public client` -->
 * Select `Certificates & Secrets` from the left hand
 * Generate a new client secret and save it in a save place - you won't see it ever again
 

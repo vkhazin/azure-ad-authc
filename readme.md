@@ -1,6 +1,15 @@
 # Azure AD Authentication Service
 
+## Objectives
+
+* An end-point where a client app can send username and password to
+* In case of a success a token is issued that can be used for other calls
+* The end-point can be used from any type of client capable of Http request
+
+
 ## Authentication Function
+
+Reference: https://docs.microsoft.com/en-us/graph/auth-v2-user
 
 ### Request
 
@@ -118,4 +127,3 @@ curl -XPOST -H "content-type:application/json" https://trgos-authentication.azur
 }'
 ```
 * Post a request using https://restninja.io/ (or alike) to simulate a browser request
-

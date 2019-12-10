@@ -16,7 +16,7 @@
 
 ### Response Success
 
-* Http Code: 200
+* Status Code: 200
 * Body:
 ```
 {
@@ -24,13 +24,17 @@
 }
 ```
 
-### Response Failure
+### Response Invalid Username/Password
 
-* Http Code: 401
+* Status Code: 401
+
+### Response Bad Request
+
+* Status Code: 400
 * Body:
 ```
 {
-   "message": "Invalid username and/or password"
+   "message": "Missing username and/or password"
 }
 ```
 

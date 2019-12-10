@@ -15,7 +15,7 @@ using Microsoft.Identity.Client;
 namespace AzureADAuthenticationService
 {
   //Response contract
-  struct Token
+  public class Token
   {
       public string token_type;
       public string access_token;
@@ -54,22 +54,23 @@ namespace AzureADAuthenticationService
 
         if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
         {
-            return new BadRequestObjectResult(new { Message = "Missing username and/or password" });
+          return new BadRequestObjectResult(new { Message = "Missing username and/or password" });
         }
 
         try
         {
-            var token = await GenerateToken(username, password);
-            return new JsonResult(new { Token = token });
+          var token = await GenerateToken(username, password);
+          log.LogInformation(token.ToString());
+          return new JsonResult(token);
         }
         catch (MsalException)
         {
-            return new BadRequestObjectResult(new { Message = "Invalid username and/or password" });
+          return new UnauthorizedResult(); //(new { Message = "Invalid username and/or password" });
         }
       }
       catch (Exception exception)
       {
-          return new BadRequestObjectResult(new { exception.Message });
+        return new BadRequestObjectResult(new { exception.Message });
       }
     }
 
@@ -80,11 +81,10 @@ namespace AzureADAuthenticationService
     /// <param name="username">username</param>
     /// <param name="password">password</param>
     /// <returns>Token</returns>
-    private static async Task<string> GenerateToken(string username, string password)
+    private static async Task<Token> GenerateToken(string username, string password)
     {
-    using (var client = new HttpClient())
-    {
-
+      using (var client = new HttpClient())
+      {
         client.BaseAddress = new Uri("https://login.microsoftonline.com");
         var request = new HttpRequestMessage(HttpMethod.Post, "/organizations/oauth2/v2.0/token");
 
@@ -102,11 +102,8 @@ namespace AzureADAuthenticationService
         var response = await client.SendAsync(request);
 
         var content = JsonConvert.DeserializeObject<Token>(await response.Content.ReadAsStringAsync());
-
-        return string.IsNullOrEmpty(content.access_token) ? "empty token" : content.access_token;
+        return content;
       }
     }
-
-
   }
 }

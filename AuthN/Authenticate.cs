@@ -15,7 +15,7 @@ using Microsoft.Identity.Client;
 namespace AzureADAuthenticationService
 {
   //Response contract
-  public class Token
+  struct Token
   {
       public string token_type;
       public string access_token;

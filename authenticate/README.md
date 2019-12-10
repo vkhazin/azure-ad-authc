@@ -1,4 +1,12 @@
-Azure Setup
+## Azure Setup
+
+### Obtain ClientId
+
+* Proceed to Azure AD from Azure Portal
+* Register a new application
+* Get client id:
+
+![ClientId](readme-img/clientid.png)
 
 ## Deployment
 

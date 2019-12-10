@@ -1,13 +1,21 @@
+## Known constraints
+
+As stated by Microsoft (https://docs.microsoft.com/en-us/azure/active-directory/develop/scenario-desktop-acquire-token):
+
+* Users who need to do MFA won't be able to sign-in (as there is no interaction).
+* The Username/Password flow isn't compatible with Conditional Access and multi-factor authentication: As a consequence, if your app runs in an Azure AD tenant where the tenant admin requires multi-factor authentication, you can't use this flow. Many organizations do that.
+* It works only for Work and school accounts (not MSA).
+
 ## Azure Setup
 
 ### Configure appication
 
 * Proceed to Azure AD from Azure Portal.
 * Register a new application.
-* Go to Authentication page and switch **Treat application as a public client** to **Yes** under Advanced settings.
+* Go to Authentication page and switch **Treat application as a public client** to **Yes** under Advanced settings (it takes about 1 minute for this setting to take effect).
 * Go to API permissions and click **Grant admin consent** button.
 
-#### Obtain ClientId
+### Obtain ClientId
 
 ![ClientId](readme-img/clientid.png)
 

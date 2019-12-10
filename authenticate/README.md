@@ -4,7 +4,7 @@ As stated by Microsoft (https://docs.microsoft.com/en-us/azure/active-directory/
 
 * Users who need to do MFA won't be able to sign-in (as there is no interaction).
 * The Username/Password flow isn't compatible with Conditional Access and multi-factor authentication: As a consequence, if your app runs in an Azure AD tenant where the tenant admin requires multi-factor authentication, you can't use this flow. Many organizations do that.
-* It works only for Work and school accounts (not MSA).
+* It works only for Work and school accounts (**not MSA**).
 
 ## Azure Setup
 
@@ -95,3 +95,19 @@ To run `helloWorld` at the same time use different port:
     
     cd ../helloWorld
     func start --build -p 7072
+
+## Sample funcs
+
+authenticate: https://azureavcauth.azurewebsites.net/api/authenticate?code=kfz4wEkaSkQvKGFnik5rC1B5VJZ3QDxzrjtfZzitLIhi2uBbIMiiIw==
+
+helloWorld: https://azureavchello.azurewebsites.net/api/helloworld?code=20kDE3lBP6cB4Hr1TruohTzxKRrwo5JGM3aEOdoEj5Mg3uJniRPmGA==
+
+Sample credentials:
+
+```
+{
+   "username": "chris@alexeybusyginhotmail.onmicrosoft.com",
+   "password": "Tupa2441Tupa2441"
+}
+```
+

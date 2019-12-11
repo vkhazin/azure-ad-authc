@@ -2,10 +2,11 @@
 
 ## Objectives
 
+![](./media/AuthN.jpg)
+
 * An end-point where a client app can send username and password to
 * In case of a success a token is issued that can be used for other calls
 * The end-point can be used from any type of client capable of Http request
-
 
 ## Authentication Function
 

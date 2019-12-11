@@ -17,12 +17,12 @@ namespace AzureADAuthenticationService
   //Response contract
   struct Token
   {
-      public string token_type;
-      public string access_token;
-      public string scope;
-      public string ext_expires_in;
-      public string refresh_token;
-      public string id_token;
+    public string token_type;
+    public string access_token;
+    public string scope;
+    public string ext_expires_in;
+    public string refresh_token;
+    public string id_token;
   }
 
   public static class Authenticate

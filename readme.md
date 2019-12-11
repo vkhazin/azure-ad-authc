@@ -8,6 +8,10 @@
 * In case of a success a token is issued that can be used for other calls
 * The end-point can be used from any type of client capable of Http request
 
+## TODO:
+
+* Add functionality to refresh `access_token` using `refresh_token`
+
 ## Authentication Function
 
 Reference: https://docs.microsoft.com/en-us/graph/auth-v2-user

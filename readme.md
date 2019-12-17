@@ -102,7 +102,7 @@ az functionapp create --resource-group $nameResourceGroup --consumption-plan-loc
 
 * Clone the repo
 * Modify the code
-* Publish the function from AuthN folder: `func azure functionapp publish trgos-authentication`
+* Publish the function from AuthN folder: `func azure functionapp publish trgos-authentication --dotnet-cli-params -- "--configuration Release"`
 * [Access function logs](https://markheath.net/post/three-ways-view-error-logs-azure-functions)
 * Advanced logging future [options](https://stackify.com/logging-azure-functions/)
 

@@ -7,7 +7,8 @@ variables:
   # Function app name
   functionAppName: 'trgos-authentication'
   # Agent VM image name
-  vmImageName: 'vs2017-win2016'
+  vmBuildImageName: 'vs2017-win2016'
+  vmRunTimeImageName: 'vs2017-win2016'
   # Working Directory
   workingDirectory: '**'
 
@@ -19,7 +20,7 @@ stages:
   - job: Build
     displayName: Build
     pool:
-      vmImage: $(vmImageName)
+      vmImage: $(vmBuildImageName)
 
     steps:
     - task: DotNetCoreCLI@2
@@ -60,7 +61,7 @@ stages:
     displayName: Deploy
     environment: 'development'
     pool:
-      vmImage: $(vmImageName)
+      vmImage: $(vmRunTimeImageName)
 
     strategy:
       runOnce:
@@ -71,5 +72,5 @@ stages:
               azureSubscription: '$(azureSubscription)'
               appType: 'functionApp'
               appName: '$(functionAppName)'
-              package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
+              package: '$(Pipeline.Workspace)/drop/$(functionAppName)-$(Build.BuildId).zip'
               deploymentMethod: 'auto'

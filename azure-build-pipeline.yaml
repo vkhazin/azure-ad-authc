@@ -12,7 +12,7 @@ variables:
   # Working Directory
   workingDirectory: '**'
   # Artifact File Path
-  artifactFile: $(Build.ArtifactStagingDirectory)/$(functionAppName)-$(Build.BuildId).zip
+  artifactFile: '$(Build.ArtifactStagingDirectory)/$(functionAppName)-$(Build.BuildId).zip'
 
 stages:
 - stage: Build

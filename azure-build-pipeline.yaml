@@ -11,6 +11,8 @@ variables:
   vmRunTimeImageName: 'vs2017-win2016'
   # Working Directory
   workingDirectory: '**'
+  # Artifact File Path
+  artifactFile: $(Build.ArtifactStagingDirectory)/$(functionAppName)-$(Build.BuildId).zip
 
 stages:
 - stage: Build
@@ -44,11 +46,11 @@ stages:
         rootFolderOrFile: '$(System.DefaultWorkingDirectory)/publish_output'
         includeRootFolder: false
         archiveType: zip
-        archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+        archiveFile: '$(artifactFile)'
         replaceExistingArchive: true
 
     # Function App Supported deployment models: https://docs.microsoft.com/en-us/azure/azure-functions/functions-deployment-technologies
-    - publish: $(Build.ArtifactStagingDirectory)/$(functionAppName)-$(Build.BuildId).zip
+    - publish: '$(artifactFile)'
       artifact: drop
 
 - stage: Deploy
@@ -72,5 +74,5 @@ stages:
               azureSubscription: '$(azureSubscription)'
               appType: 'functionApp'
               appName: '$(functionAppName)'
-              package: '$(Pipeline.Workspace)/drop/$(functionAppName)-$(Build.BuildId).zip'
+              package: '$(artifactFile)'
               deploymentMethod: 'auto'

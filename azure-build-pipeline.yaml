@@ -12,7 +12,7 @@ variables:
   # Working Directory
   workingDirectory: '**'
   # Artifact File Path
-  artifactFile: '$(Build.ArtifactStagingDirectory)/$(functionAppName)-$(Build.BuildId).zip'
+  artifactFile: '$(functionAppName)-$(Build.BuildId).zip'
 
 stages:
 - stage: Build
@@ -46,11 +46,11 @@ stages:
         rootFolderOrFile: '$(System.DefaultWorkingDirectory)/publish_output'
         includeRootFolder: false
         archiveType: zip
-        archiveFile: '$(artifactFile)'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(artifactFile)'
         replaceExistingArchive: true
 
     # Function App Supported deployment models: https://docs.microsoft.com/en-us/azure/azure-functions/functions-deployment-technologies
-    - publish: '$(artifactFile)'
+    - publish: '$(Build.ArtifactStagingDirectory)/$(artifactFile)'
       artifact: drop
 
 - stage: Deploy
@@ -74,5 +74,5 @@ stages:
               azureSubscription: '$(azureSubscription)'
               appType: 'functionApp'
               appName: '$(functionAppName)'
-              package: '$(artifactFile)'
+              package: '$(Pipeline.Workspace)/drop/$(artifactFile)'
               deploymentMethod: 'auto'

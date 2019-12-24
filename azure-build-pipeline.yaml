@@ -3,7 +3,7 @@ trigger:
 
 variables:
   # Azure Resource Manager connection created during pipeline creation
-  azureSubscription: 'trgos'
+  azureSubscription: 'arm'
   # Function app name
   functionAppName: 'trgos-authentication'
   # Agent VM image name

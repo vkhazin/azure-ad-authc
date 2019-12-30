@@ -13,6 +13,10 @@ variables:
   workingDirectory: '**'
   # Artifact File Path
   artifactFile: '$(functionAppName)-$(Build.BuildId).zip'
+  # Azure Blob Storage for artifacts
+  absStorage: 'sttrgosartifacts'
+  # Azure Blob Storage container name for artifacts
+  absContainerName: 'azuread-authn-svc'
 
 stages:
 - stage: Build
@@ -48,10 +52,20 @@ stages:
         archiveType: zip
         archiveFile: '$(Build.ArtifactStagingDirectory)/$(artifactFile)'
         replaceExistingArchive: true
+    
+        - task: PublishBuildArtifacts@1                                             
+      inputs:
+        pathtoPublish: '$(Build.ArtifactStagingDirectory)/$(artifactFile)'
+        artifactName: 'drop'
 
-    # Function App Supported deployment models: https://docs.microsoft.com/en-us/azure/azure-functions/functions-deployment-technologies
-    - publish: '$(Build.ArtifactStagingDirectory)/$(artifactFile)'
-      artifact: drop
+    - task: AzureFileCopy@3
+      displayName: 'Azure Blob File Copy'
+      inputs:
+        sourcePath: '$(Build.ArtifactStagingDirectory)/$(artifactFile).zip'
+        azureSubscription: '$(azureSubscription)'
+        destination: azureBlob
+        storage: '$(absStorage)'
+        containerName: '$(absContainerName)'
 
 - stage: Deploy
   displayName: Deploy stage

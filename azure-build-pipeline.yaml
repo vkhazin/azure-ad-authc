@@ -50,7 +50,7 @@ stages:
         rootFolderOrFile: '$(System.DefaultWorkingDirectory)/publish_output'
         includeRootFolder: false
         archiveType: zip
-        archiveFile: '$(Build.ArtifactStagingDirectory)/$(artifactFile)'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(artifactFile).zip'
         replaceExistingArchive: true
     
     - task: PublishBuildArtifacts@1                                             

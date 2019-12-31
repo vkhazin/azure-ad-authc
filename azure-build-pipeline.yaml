@@ -67,18 +67,15 @@ stages:
         archiveFile: '$(Build.ArtifactStagingDirectory)/$(artifactFile)'
         replaceExistingArchive: true
 
-    # - task: 
-    #   displayName: PublishArtifactToBitbucket
-    #     curl -X POST "https://$(bitbucket_username):$(bitbucket_password)@api.bitbucket.org/2.0/repositories/$(bitbucket-repo-owner)/$(bitbucket-repo-name)/downloads" --form files=@"$(Build.ArtifactStagingDirectory)/$(artifactFile)" -v
-
-    - task: cURLUploader@2
+    - task: Bash@3
       displayName: PublishArtifactToBitbucket
-      inputs:
-        files: '$(Build.ArtifactStagingDirectory)'
-        # authType: 'userAndPass'
-        # username: '$(bitbucket_username)'
-        # password: '$(bitbucket_password)'
-        url: 'https://$(bitbucket_username):$(bitbucket_password)@api.bitbucket.org/2.0/repositories/$(bitbucket-repo-owner)/$(bitbucket-repo-name)/downloads'
+        script: 'curl -X POST "https://$(bitbucket_username):$(bitbucket_password)@api.bitbucket.org/2.0/repositories/$(bitbucket-repo-owner)/$(bitbucket-repo-name)/downloads" --form files=@"$(Build.ArtifactStagingDirectory)/$(artifactFile)" -v'
+
+    # - task: cURLUploader@2
+    #   displayName: PublishArtifactToBitbucket
+    #   inputs:
+    #     files: '$(Build.ArtifactStagingDirectory)'
+    #     url: 'https://$(bitbucket_username):$(bitbucket_password)@api.bitbucket.org/2.0/repositories/$(bitbucket-repo-owner)/$(bitbucket-repo-name)/downloads'
 
 
     # - task: PublishBuildArtifacts@1                                             

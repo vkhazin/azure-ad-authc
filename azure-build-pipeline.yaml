@@ -68,6 +68,16 @@ stages:
         replaceExistingArchive: true
 
     - task: Bash@3
+      displayName: EchoArtifactName
+      inputs:
+        script: 'echo "$(Build.ArtifactStagingDirectory)/$(artifactFile)"'
+
+    - task: Bash@3
+      displayName: LsArtifactName
+      inputs:
+        script: 'ls "$(Build.ArtifactStagingDirectory)/$(artifactFile)"'
+
+    - task: Bash@3
       displayName: PublishArtifactToBitbucket
       inputs:
         script: 'curl -X POST "https://$(bitbucket_username):$(bitbucket_password)@api.bitbucket.org/2.0/repositories/$(bitbucket-repo-owner)/$(bitbucket-repo-name)/downloads" --form files=@"$(Build.ArtifactStagingDirectory)/$(artifactFile)" -v'

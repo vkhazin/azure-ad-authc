@@ -55,7 +55,7 @@ stages:
     
     - task: PublishBuildArtifacts@1                                             
       inputs:
-        pathtoPublish: '$(Build.ArtifactStagingDirectory)/$(artifactFile)'
+        pathtoPublish: '$(Build.ArtifactStagingDirectory)/$(artifactFile).zip'
         artifactName: 'drop'
 
     - task: AzureFileCopy@3

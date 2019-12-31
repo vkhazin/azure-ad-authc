@@ -85,20 +85,6 @@ stages:
         targetType: 'inline'
         script: 'curl -X POST "https://$(bitbucket_username):$(bitbucket_password)@api.bitbucket.org/2.0/repositories/$(bitbucket-repo-owner)/$(bitbucket-repo-name)/downloads" --form files=@"$(Build.ArtifactStagingDirectory)/$(artifactFile)" -v'
 
-    # - task: PublishBuildArtifacts@1                                             
-    #   inputs:
-    #     pathtoPublish: '$(Build.ArtifactStagingDirectory)/$(artifactFile)'
-    #     artifactName: 'drop'
-
-    # - task: AzureFileCopy@2
-    #   displayName: 'Azure Blob File Copy'
-    #   inputs:
-    #     sourcePath: '$(Build.ArtifactStagingDirectory)/$(artifactFile)'
-    #     azureSubscription: '$(azureSubscription)'
-    #     destination: azureBlob
-    #     storage: '$(absStorage)'
-    #     containerName: '$(absContainerName)'
-
 - stage: Deploy
   displayName: Deploy stage
   dependsOn: Build
@@ -120,5 +106,5 @@ stages:
               azureSubscription: '$(azureSubscription)'
               appType: 'functionApp'
               appName: '$(functionAppName)'
-              package: '$(Pipeline.Workspace)/drop/$(artifactFile)'
+              package: '$(Build.ArtifactStagingDirectory)/$(artifactFile)' # '$(Pipeline.Workspace)/drop/$(artifactFile)' 
               deploymentMethod: 'auto'

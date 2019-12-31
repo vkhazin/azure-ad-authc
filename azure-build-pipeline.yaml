@@ -9,7 +9,7 @@ variables:
   - name: bitbucket-repo-name
     value: 'azuread-authn-svc'
   # Azure Resource Manager connection created during pipeline creation
-  - name: azureSubscription: 
+  - name: azureSubscription
     value: 'trgos'
   # Function app name
   - name: functionAppName

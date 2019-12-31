@@ -74,7 +74,7 @@ stages:
     - task: cURLUploader@2
       displayName: PublishArtifactToBitbucket
       inputs:
-        files: '$(Build.ArtifactStagingDirectory)''
+        files: '$(Build.ArtifactStagingDirectory)'
         # authType: 'userAndPass'
         # username: '$(bitbucket_username)'
         # password: '$(bitbucket_password)'

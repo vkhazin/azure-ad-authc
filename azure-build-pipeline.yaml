@@ -23,14 +23,14 @@ variables:
   - name: workingDirectory
     value: '**'
   # Artifact File Path
-  - name artifactFile
+  - name: artifactFile
     value: '$(functionAppName)-$(Build.BuildId).zip'
   # Azure Blob Storage for artifacts
-  - name absStorage
-    value: 'sttrgosartifacts'
-  # Azure Blob Storage container name for artifacts
-  - name absContainerName
-    value : 'azuread-authn-svc'
+  # - name: absStorage
+  #   value: 'sttrgosartifacts'
+  # # Azure Blob Storage container name for artifacts
+  # - name: absContainerName
+  #   value : 'azuread-authn-svc'
 
 stages:
 - stage: Build

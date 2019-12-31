@@ -69,6 +69,7 @@ stages:
 
     - task: Bash@3
       displayName: PublishArtifactToBitbucket
+      inputs:
         script: 'curl -X POST "https://$(bitbucket_username):$(bitbucket_password)@api.bitbucket.org/2.0/repositories/$(bitbucket-repo-owner)/$(bitbucket-repo-name)/downloads" --form files=@"$(Build.ArtifactStagingDirectory)/$(artifactFile)" -v'
 
     # - task: cURLUploader@2

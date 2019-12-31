@@ -2,21 +2,35 @@ trigger:
 - master
 
 variables:
+  # Integration with Bitbucket
+  - group: bitbucket-integration
+  - name: bitbucket-repo-owner
+    value: 'vktrp'
+  - name: bitbucket-repo-name
+    value: 'azuread-authn-svc'
   # Azure Resource Manager connection created during pipeline creation
-  azureSubscription: 'trgos'
+  - name: azureSubscription: 
+    value: 'trgos'
   # Function app name
-  functionAppName: 'trgos-authentication'
+  - name: functionAppName
+    value: 'trgos-authentication'
   # Agent VM image name
-  vmBuildImageName: 'vs2017-win2016'
-  vmRunTimeImageName: 'vs2017-win2016'
+  - name: vmBuildImageName
+    value: 'vs2017-win2016'
+  -name: vmRunTimeImageName
+    value: 'vs2017-win2016'
   # Working Directory
-  workingDirectory: '**'
+  - name: workingDirectory
+    value: '**'
   # Artifact File Path
-  artifactFile: '$(functionAppName)-$(Build.BuildId).zip'
+  - name artifactFile
+    value: '$(functionAppName)-$(Build.BuildId).zip'
   # Azure Blob Storage for artifacts
-  absStorage: 'sttrgosartifacts'
+  - name absStorage
+    value: 'sttrgosartifacts'
   # Azure Blob Storage container name for artifacts
-  absContainerName: 'azuread-authn-svc'
+  - name absContainerName
+    value : 'azuread-authn-svc'
 
 stages:
 - stage: Build
@@ -52,20 +66,34 @@ stages:
         archiveType: zip
         archiveFile: '$(Build.ArtifactStagingDirectory)/$(artifactFile)'
         replaceExistingArchive: true
-    
-    - task: PublishBuildArtifacts@1                                             
-      inputs:
-        pathtoPublish: '$(Build.ArtifactStagingDirectory)/$(artifactFile)'
-        artifactName: 'drop'
 
-    - task: AzureFileCopy@2
-      displayName: 'Azure Blob File Copy'
+    # - task: 
+    #   displayName: PublishArtifactToBitbucket
+    #     curl -X POST "https://$(bitbucket_username):$(bitbucket_password)@api.bitbucket.org/2.0/repositories/$(bitbucket-repo-owner)/$(bitbucket-repo-name)/downloads" --form files=@"$(Build.ArtifactStagingDirectory)/$(artifactFile)" -v
+
+    - task: cURLUploader@2
+      displayName: PublishArtifactToBitbucket
       inputs:
-        sourcePath: '$(Build.ArtifactStagingDirectory)/$(artifactFile)'
-        azureSubscription: '$(azureSubscription)'
-        destination: azureBlob
-        storage: '$(absStorage)'
-        containerName: '$(absContainerName)'
+        files: '$(Build.ArtifactStagingDirectory)''
+        # authType: 'userAndPass'
+        # username: '$(bitbucket_username)'
+        # password: '$(bitbucket_password)'
+        url: 'https://$(bitbucket_username):$(bitbucket_password)@api.bitbucket.org/2.0/repositories/$(bitbucket-repo-owner)/$(bitbucket-repo-name)/downloads'
+
+
+    # - task: PublishBuildArtifacts@1                                             
+    #   inputs:
+    #     pathtoPublish: '$(Build.ArtifactStagingDirectory)/$(artifactFile)'
+    #     artifactName: 'drop'
+
+    # - task: AzureFileCopy@2
+    #   displayName: 'Azure Blob File Copy'
+    #   inputs:
+    #     sourcePath: '$(Build.ArtifactStagingDirectory)/$(artifactFile)'
+    #     azureSubscription: '$(azureSubscription)'
+    #     destination: azureBlob
+    #     storage: '$(absStorage)'
+    #     containerName: '$(absContainerName)'
 
 - stage: Deploy
   displayName: Deploy stage

@@ -50,18 +50,18 @@ stages:
         rootFolderOrFile: '$(System.DefaultWorkingDirectory)/publish_output'
         includeRootFolder: false
         archiveType: zip
-        archiveFile: '$(Build.ArtifactStagingDirectory)/$(artifactFile).zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(artifactFile)'
         replaceExistingArchive: true
     
     - task: PublishBuildArtifacts@1                                             
       inputs:
-        pathtoPublish: '$(Build.ArtifactStagingDirectory)/$(artifactFile).zip'
+        pathtoPublish: '$(Build.ArtifactStagingDirectory)/$(artifactFile)'
         artifactName: 'drop'
 
     - task: AzureFileCopy@3
       displayName: 'Azure Blob File Copy'
       inputs:
-        sourcePath: '$(Build.ArtifactStagingDirectory)/$(artifactFile).zip'
+        sourcePath: '$(Build.ArtifactStagingDirectory)/$(artifactFile)'
         azureSubscription: '$(azureSubscription)'
         destination: azureBlob
         storage: '$(absStorage)'

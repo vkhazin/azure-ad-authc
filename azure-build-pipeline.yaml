@@ -58,7 +58,7 @@ stages:
         pathtoPublish: '$(Build.ArtifactStagingDirectory)/$(artifactFile)'
         artifactName: 'drop'
 
-    - task: AzureFileCopy@3
+    - task: AzureFileCopy@2
       displayName: 'Azure Blob File Copy'
       inputs:
         sourcePath: '$(Build.ArtifactStagingDirectory)/$(artifactFile)'

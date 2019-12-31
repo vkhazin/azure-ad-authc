@@ -17,7 +17,7 @@ variables:
   # Agent VM image name
   - name: vmBuildImageName
     value: 'vs2017-win2016'
-  -name: vmRunTimeImageName
+  - name: vmRunTimeImageName
     value: 'vs2017-win2016'
   # Working Directory
   - name: workingDirectory
